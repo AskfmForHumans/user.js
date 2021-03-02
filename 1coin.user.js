@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name         AskfmForHumans/1coin
-// @namespace    https://github.com/AskfmForHumans
 // @version      1.0
-// @description  Restore 1 click = 1 coin behavior on ASKfm
+// @namespace    https://github.com/AskfmForHumans
+// @author       https://github.com/AskfmForHumans
 // @homepage     https://github.com/AskfmForHumans/user.js
 // @license      MIT
+//
+// @description Restore 1 click = 1 coin (not 5 coins) behavior on ASKfm
+// @description:RU Возвращает отправку 1 монеты (а не 5) при клике по "огоньку"
 //
 // @grant        none
 // @match        https://ask.fm/*
