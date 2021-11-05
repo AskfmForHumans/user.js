@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AskfmForHumans/themes
-// @version      1.0
+// @version      1.1
 // @namespace    https://github.com/AskfmForHumans
 // @author       https://github.com/AskfmForHumans
 // @homepage     https://github.com/AskfmForHumans/user.js
