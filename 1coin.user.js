@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         AskfmForHumans/1coin
-// @version      1.1
+// @name:RU      AskfmForHumans/1coin
+// @version      1.1.1
 // @namespace    https://github.com/AskfmForHumans
 // @author       https://github.com/AskfmForHumans
-// @homepage     https://github.com/AskfmForHumans/user.js
+// @homepage     https://afh.snowwm.ml/userjs/1coin
 // @license      MIT
 //
 // @description Restore 1 click = 1 coin (not 5 coins) behavior on ASKfm
