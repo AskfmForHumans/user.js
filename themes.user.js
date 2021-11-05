@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         AskfmForHumans/themes
-// @version      1.0
+// @version      1.1
 // @namespace    https://github.com/AskfmForHumans
 // @author       https://github.com/AskfmForHumans
 // @homepage     https://github.com/AskfmForHumans/user.js
@@ -9,14 +9,16 @@
 // @description  Restore the choice from 18 color themes (selectable in the userscript manager menu)
 // @description:RU Возвращает выбор из 18 цветовых тем (управление через меню менеджера юзерскриптов)
 //
+// @match        https://ask.fm/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
+// @grant        GM_getResourceURL
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @match        https://ask.fm/*
 // @resource     style https://github.com/AskfmForHumans/user.js/raw/main/themes.css
+// @resource     icon https://github.com/AskfmForHumans/user.js/raw/main/icon-owl.ico
 // ==/UserScript==
 
 (function () {
@@ -62,11 +64,24 @@
     function applyTheme() {
         const currentTheme = GM_getValue("afh-askfm-theme", null)
         console.info(LOG_PREFIX, `apply ${currentTheme}`)
+
         for (const i of THEME_NUMBERS) {
             document.body.classList.remove(`theme-${i}`)
         }
+
+        let iconElem = document.getElementById("afh-icon")
+        if (!iconElem) {
+            iconElem = document.createElement("link")
+            iconElem.id = "afh-icon"
+            iconElem.rel = "icon"
+            document.head.appendChild(iconElem)
+        }
+
         if (currentTheme !== null) {
             document.body.classList.add(currentTheme)
+            iconElem.href = GM_getResourceURL("icon")
+        } else {
+            iconElem.href = "/favicon.ico"
         }
     }
 })()
