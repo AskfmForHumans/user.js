@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         AskfmForHumans/themes
-// @version      1.1
+// @name:RU      AskfmForHumans/themes
+// @version      1.1.1
 // @namespace    https://github.com/AskfmForHumans
 // @author       https://github.com/AskfmForHumans
-// @homepage     https://github.com/AskfmForHumans/user.js
+// @homepage     https://afh.snowwm.ml/userjs/themes
 // @license      MIT
 //
-// @description  Restore the choice from 18 color themes (selectable in the userscript manager menu)
-// @description:RU Возвращает выбор из 18 цветовых тем (управление через меню менеджера юзерскриптов)
+// @description  Restore the choice from 18 color themes
+// @description:RU Возвращает выбор из 18 цветовых тем
 //
 // @match        https://ask.fm/*
 // @grant        GM_getValue
