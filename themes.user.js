@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AskfmForHumans/themes
 // @name:ru      AskfmForHumans/themes
-// @version      1.1.1
+// @version      1.2.0
 // @namespace    https://github.com/AskfmForHumans
 // @author       https://github.com/AskfmForHumans
 // @homepage     https://afh.snowwm.ml/userjs/themes
@@ -25,51 +25,81 @@
 (function () {
     "use strict"
 
-    const THEME_NUMBERS = [...Array(18).keys()]
-    const MENU_ITEMS = []
-    const LOG_PREFIX = "AskfmForHumans/themes:"
+    const LOG_PREFIX = "afh/themes:"
+    const THEME_NAMES = [ // by WandAlKa
+        "[Без темы]",
+        "Томатная жижа",
+        "Голубой вагон",
+        "Хмурь",
+        "Глухая чаща",
+        "Кровавое месиво",
+        "Сумеречная зона",
+        "Фиалка в горшочке",
+        "Барби",
+        "Мёртвый розовый",
+        "Стервозный розовый",
+        "Shitty Life",
+        "Гематома",
+        "Стратосфера",
+        "Морфей",
+        "Басейн",
+        "Болотная водоросль",
+        "Фисташка",
+        "Тенистый мох",
+    ]
+
+    const menuItems = []
 
     GM_addStyle(GM_getResourceText("style"))
-    rebuildMenu()
-    applyTheme()
+    update()
 
     // Re-apply when a new body is created (on URL change).
-    const observer = new MutationObserver(applyTheme)
+    const observer = new MutationObserver(() => update())
     observer.observe(document.documentElement, {
         childList: true,
     })
 
-    function rebuildMenu() {
-        const currentTheme = GM_getValue("afh-askfm-theme", null)
-        for (const i of MENU_ITEMS) {
+    function update(themeId) {
+        if (themeId !== undefined) {
+            GM_setValue("afh-askfm-theme", themeId)
+        } else {
+            themeId = GM_getValue("afh-askfm-theme") || 0
+        }
+
+        rebuildMenu(themeId)
+        applyTheme(themeId)
+    }
+
+    function rebuildMenu(currentTheme) {
+        // clear current items
+        for (const i of menuItems) {
             GM_unregisterMenuCommand(i)
         }
-        MENU_ITEMS.length = 0
-        for (const i of THEME_NUMBERS) {
-            const id = `theme-${i}`
-            const name = (id === currentTheme ? `Theme ${i} ✔️` : `Theme ${i}`)
-            const cmd = GM_registerMenuCommand(name, toggleTheme.bind(null, id))
-            MENU_ITEMS.push(cmd)
+        menuItems.length = 0
+
+        for (const [id, name] of THEME_NAMES.entries()) {
+            const text = (id === currentTheme ? `${id}. ${name} ✔️` : `${id}. ${name}`)
+            const cmd = GM_registerMenuCommand(text, () => update(id))
+            menuItems.push(cmd)
         }
     }
 
-    function toggleTheme(id) {
-        const currentTheme = GM_getValue("afh-askfm-theme", null)
-        const newTheme = (id === currentTheme ? null : id)
-        console.info(LOG_PREFIX, `toggle old=${currentTheme} new=${newTheme}`)
-        GM_setValue("afh-askfm-theme", newTheme)
-        rebuildMenu()
-        applyTheme()
-    }
-
-    function applyTheme() {
-        const currentTheme = GM_getValue("afh-askfm-theme", null)
+    function applyTheme(currentTheme) {
         console.info(LOG_PREFIX, `apply ${currentTheme}`)
 
-        for (const i of THEME_NUMBERS) {
+        for (const i of THEME_NAMES.keys()) {
             document.body.classList.remove(`theme-${i}`)
         }
 
+        if (currentTheme > 0) {
+            setIcon(true)
+            document.body.classList.add(`theme-${currentTheme - 1}`)
+        } else {
+            setIcon(false)
+        }
+    }
+
+    function setIcon(enabled) {
         let iconElem = document.getElementById("afh-icon")
         if (!iconElem) {
             iconElem = document.createElement("link")
@@ -78,8 +108,7 @@
             document.head.appendChild(iconElem)
         }
 
-        if (currentTheme !== null) {
-            document.body.classList.add(currentTheme)
+        if (enabled) {
             iconElem.href = GM_getResourceURL("icon")
         } else {
             iconElem.href = "/favicon.ico"
